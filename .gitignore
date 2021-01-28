@@ -5,7 +5,7 @@
 */target
 */src/test
 logs
-
+*.yml
 # Log file
 *.log
 

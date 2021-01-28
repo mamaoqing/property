@@ -26,7 +26,7 @@ public class MenuController extends BaseController {
     @Autowired
     private RestTemplate restTemplate;
     
-    private String url = "/system/sMenu";
+    private final String url = "/system/sMenu";
 
     @GetMapping("/get")
     public Result getMenuList(@RequestHeader(ShigeConstant.TOKEN) String token, HttpServletRequest request) {

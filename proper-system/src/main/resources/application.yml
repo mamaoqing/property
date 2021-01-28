@@ -17,7 +17,7 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: 172.16.0.42:8848
+        server-addr: localhost:8848
   redis:
     database: 0
     jedis:
