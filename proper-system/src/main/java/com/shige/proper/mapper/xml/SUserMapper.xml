@@ -1,5 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.shige.proper.mapper.SUserMapper">
+    <select id="findOne" resultType="com.shige.proper.entity.system.SUser" parameterType="java.lang.Integer">
+        select * from s_user where id =#{id}  and is_delete = 0
+    </select>
+    <select id="findByUserName" resultType="com.shige.proper.entity.system.SUser" parameterType="java.lang.String">
+        select * from s_user where userName =#{username} and is_delete = 0
+    </select>
+    <select id="listUser" resultType="com.shige.proper.entity.system.SUser">
+        SELECT aa.id,aa.name,aa.userName,aa.type,aa.created_at,
+        aa.created_name,aa.modified_at,aa.modified_name,bb.name compName,cc.name orgName,aa.compId,aa.orgId,aa.tel,aa.state,aa.type
+        FROM s_user aa
+        left join s_company bb on aa.compId = bb.id
+        left join s_org cc on aa.orgId = cc.id
+        ${ew.customSqlSegment}
 
+    </select>
+    <!--compId = 1 and (parent_id_list like '0,3%' or (parent_id_list = '0,3')) and is_delete = 0 and userName='cfy' and name='cfy'-->
+    <select id="findUserList" resultType="com.shige.proper.entity.system.SUser">
+        select * from
+        v_s_user_role where 1=1 and is_delete=0
+        <if test="compId != null and compId != ''">
+            and compId = #{compId}
+        </if>
+        <if test="userName != null and userName != ''">
+            and userName like CONCAT('%',#{userName},'%')
+        </if>
+        <if test="name != null and name != ''">
+            and name like CONCAT('%',#{name},'%')
+        </if>
+        <if test="parentIdList != null and parentIdList != ''">
+            and (parent_id_list = #{parentIdList} or parent_id_list like CONCAT(#{parentIdList},'%'))
+        </if>
+    </select>
+
+    <select id="findUserCommList" resultType="com.shige.proper.entity.system.SUser">
+        select u.*
+        from v_s_user_role u,s_user_comm comm
+        where u.id = comm.user_id and comm.comm_id= #{commId} and u.is_delete=0
+        and u.compId = #{compId}
+        <if test="userName != null and userName != ''">
+            and u.userName like CONCAT('%',#{userName},'%')
+        </if>
+        <if test="name != null and name != ''">
+            and u.name like CONCAT('%',#{name},'%')
+        </if>
+    </select>
+
+    <update id="updateUserOrg" parameterType="java.lang.Long">
+        update s_user set orgId = null where orgId = #{id}
+    </update>
 </mapper>

@@ -1,5 +1,6 @@
 package com.shige.proper.util;
 
+import com.shige.proper.constant.ShigeConstant;
 import org.springframework.util.DigestUtils;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
@@ -22,9 +23,9 @@ public class PasswdEncryption {
     public static String encptyPasswd(String passwd){
         StringBuffer sbf = new StringBuffer();
         sbf.append(passwd);
-        //在用户输入的密码两头拼接sdzy
-        sbf.insert(0,"sdzy");
-        sbf.insert(passwd.length()-1,"sdzy");
+        //在用户输入的密码两头拼接字符
+        sbf.insert(0, ShigeConstant.PASSWORD_CHAR);
+        sbf.insert(passwd.length()-1,ShigeConstant.PASSWORD_CHAR);
         //用md5加密
         String pwd = DigestUtils.md5DigestAsHex(sbf.toString().getBytes());
         String now = Calendar.getInstance().getTimeInMillis()+"";
@@ -47,13 +48,12 @@ public class PasswdEncryption {
     public static String setMD5String(String password) throws UnsupportedEncodingException {
         StringBuffer sbf = new StringBuffer();
         sbf.append(password);
-        //在用户输入的密码两头拼接sdzy
-        sbf.insert(0,"sdzy");
-        sbf.insert(password.length()-1,"sdzy");
+        //在用户输入的密码两头拼接字符
+        sbf.insert(0,ShigeConstant.PASSWORD_CHAR);
+        sbf.insert(password.length()-1,ShigeConstant.PASSWORD_CHAR);
         //用md5加密
         String pwd = DigestUtils.md5DigestAsHex(sbf.toString().getBytes());
-//        byte[] bytes = pwd.getBytes("utf-8");
-        return pwd;//encoder.encode(bytes);
+        return pwd;
     }
 
     /***

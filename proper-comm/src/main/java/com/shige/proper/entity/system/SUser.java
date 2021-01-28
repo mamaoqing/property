@@ -93,5 +93,10 @@ public class SUser implements Serializable {
     @TableField("createUserName")
     private String createUserName;
 
+    @TableField(exist = false)
+    private String compName;
+    @TableField(exist = false)
+    private String orgName;
+
 
 }

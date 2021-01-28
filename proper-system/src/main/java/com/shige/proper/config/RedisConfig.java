@@ -4,12 +4,14 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+import org.springframework.util.StringUtils;
 
 /**
  * @author mq
@@ -24,6 +26,20 @@ public class RedisConfig {
     static {
       log.info("RedisConfig is start ......");
     }
+
+    @Autowired
+    private RedisTemplate<String, Object> redisTemplate;
+
+
+    @Bean
+    public String getString(){
+        Object o = redisTemplate.opsForValue().get("name");
+        if(StringUtils.isEmpty(o)){
+            return null;
+        }
+        return o.toString();
+    }
+
     @Bean
     @SuppressWarnings("all")
     public RedisTemplate<String,Object> redisTemplate(RedisConnectionFactory factory){
@@ -46,4 +62,6 @@ public class RedisConfig {
         template.afterPropertiesSet();
         return template;
     }
+
+
 }

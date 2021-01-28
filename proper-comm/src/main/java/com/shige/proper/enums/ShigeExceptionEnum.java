@@ -15,6 +15,8 @@ public enum ShigeExceptionEnum {
     PARAMS_MISS_ERROR ("参数错误",40011),
     PAGE_NO_MISS_ERROR ("参数错误,页码必传",40012),
     USER_EXIST_ERROR ("用户名已经存在",40021),
+    USER_NOT_EXIST_ERROR ("用户不存在",40022),
+    PASSWORD_ERROR ("密码错误",40022),
     SET_USER_ROLE_ERROR ("设置用户权限异常",30011),
     SET_USER_COMM_ERROR ("设置用户数据权限异常",30012),
     SET_ROLE_MENU_ERROR ("设置角色菜单异常",30013),

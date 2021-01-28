@@ -25,21 +25,16 @@ public class MenuUtil {
         // 用户所有的菜单集合
         List<SMenu> resultList = new ArrayList<>();
 
-        // 所有一级菜单的集合
-        List<SMenu> parentMenuList = new ArrayList<>();
         // 遍历用户所有的权限菜单，如果没有父id，表示就是一级菜单
         for (SMenu s : allRoleMenu) {
             if (StringUtils.isEmpty(s.getParentId())) {
-                parentMenuList.add(s);
+                List<SMenu> childMenu = MenuUtil.getChildMenu(s.getId(), allRoleMenu);
+                s.setChirldMenuList(childMenu);
+                resultList.add(s);
             }
         }
 
-        // 递归的方式将所有的一级菜单下的子菜单封装
-        for (SMenu p : parentMenuList) {
-            List<SMenu> childMenu = MenuUtil.getChildMenu(p.getId(), allRoleMenu);
-            p.setChirldMenuList(childMenu);
-            resultList.add(p);
-        }
+
 
         return resultList;
     }
@@ -58,22 +53,12 @@ public class MenuUtil {
         if (alist.isEmpty()) {
             return childList;
         }
-        // 子菜单
-
         // 如果说子菜单的父菜单id跟参数中的id相等，表示是该id菜单的子菜单
         for (SMenu x : alist) {
             if (id.equals(x.getParentId())) {
+                x.setChirldMenuList(getChildMenu(x.getId(), alist));
                 childList.add(x);
             }
-        }
-        // 递归查询子菜单下的子菜单
-        for (SMenu y : childList) {
-            y.setChirldMenuList(getChildMenu(y.getId(), alist));
-//            y.setList(getChildMenu(y.getId(),alist));
-        }
-
-        if (childList.size() == 0) {
-            return childList;
         }
         return childList;
     }

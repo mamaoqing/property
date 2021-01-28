@@ -36,11 +36,8 @@ public class MybatisPlusConfig implements MetaObjectHandler {
     // 在数据库信息创建的时候自动添加创建时间和更新时间
     @Override
     public void insertFill(MetaObject metaObject) {
-        if(metaObject.hasSetter("createdAt")){
-            this.setFieldValByName("createdAt",new Date(),metaObject);
-        }
-        if(metaObject.hasSetter("modifiedAt")) {
-            this.setFieldValByName("modifiedAt", new Date(), metaObject);
+        if(metaObject.hasSetter("createTime")){
+            this.setFieldValByName("createTime",new Date(),metaObject);
         }
     }
 
