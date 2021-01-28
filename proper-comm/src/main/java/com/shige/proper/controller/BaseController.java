@@ -1,5 +1,6 @@
 package com.shige.proper.controller;
 
+import com.shige.proper.constant.ShigeConstant;
 import com.shige.proper.entity.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
@@ -89,7 +90,7 @@ public class BaseController {
     }
 
     /**
-     * 同意get请求
+     * 统一get请求
      * @param restTemplate 请求
      * @param url 请求的连接
      * @param request 请求参数
@@ -98,7 +99,7 @@ public class BaseController {
      */
     protected Result doGetRestTemplate(RestTemplate restTemplate, String url, HttpServletRequest request, String token){
         HttpHeaders requestHeaders = new HttpHeaders();
-        requestHeaders.add("Authentication-Token",token);
+        requestHeaders.add(ShigeConstant.TOKEN,token);
         StringBuilder stringBuffer = new StringBuilder(url);
         HttpEntity<String> requestEntity = new HttpEntity<String>("", requestHeaders);
         Map<String, String> map = this.getParameterMap(request);
@@ -129,7 +130,7 @@ public class BaseController {
 
     protected Result doGetRestTemplate(String url, HttpServletRequest request, String token){
         HttpHeaders requestHeaders = new HttpHeaders();
-        requestHeaders.add("Authentication-Token",token);
+        requestHeaders.add(ShigeConstant.TOKEN,token);
         StringBuilder stringBuffer = new StringBuilder(url);
         HttpEntity<String> requestEntity = new HttpEntity<String>("", requestHeaders);
         Map<String, String> map = this.getParameterMap(request);
@@ -169,7 +170,7 @@ public class BaseController {
         HttpHeaders headers = new HttpHeaders();
         // 以表单的方式提交
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        headers.add("Authentication-Token",token);
+        headers.add(ShigeConstant.TOKEN,token);
         //将请求头部和参数合成一个请求
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(this.getParams(request), headers);
         return restTemplate.exchange(url,method,requestEntity,Result.class).getBody();
@@ -180,7 +181,7 @@ public class BaseController {
         HttpHeaders headers = new HttpHeaders();
         // 以表单的方式提交
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        headers.add("Authentication-Token",token);
+        headers.add(ShigeConstant.TOKEN,token);
         //将请求头部和参数合成一个请求
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(this.getParams(request), headers);
         return new RestTemplate().exchange(url,method,requestEntity,Result.class).getBody();

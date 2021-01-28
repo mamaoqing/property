@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: web
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 172.16.0.42:8848
+server:
+  port: 7001
+web:
+  system:
+    server-url: http://system

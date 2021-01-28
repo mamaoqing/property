@@ -11,6 +11,7 @@
         <module>proper-comm</module>
         <module>proper-autocode</module>
         <module>proper-system</module>
+        <module>proper-web</module>
     </modules>
     <packaging>pom</packaging>
 
