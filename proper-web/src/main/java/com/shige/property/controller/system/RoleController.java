@@ -2,6 +2,7 @@ package com.shige.property.controller.system;
 
 import com.shige.proper.controller.BaseController;
 import com.shige.proper.entity.Result;
+import com.shige.proper.entity.system.SRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 /**
  * @author mq
@@ -37,8 +39,8 @@ public class RoleController extends BaseController {
     }
 
     @PutMapping("/updateRole")
-    public Result updateRole(HttpServletRequest request, @RequestHeader("Authentication-Token") String token) {
-        return doPostRestTemplate(restTemplate,serverUrl+url+"/updateRole",request,token, HttpMethod.PUT);
+    public Result updateRole(@RequestBody SRole role, @RequestHeader("Authentication-Token") String token) {
+        return doPostObject(restTemplate, serverUrl + url + "/updateRole", role, token, HttpMethod.PUT);
 
     }
 
@@ -53,8 +55,8 @@ public class RoleController extends BaseController {
     }
 
     @PostMapping("/insertRole")
-    public Result insertRole(HttpServletRequest request, @RequestHeader("Authentication-Token") String token) {
-        return doPostRestTemplate(restTemplate,serverUrl+url+"/insertRole",request,token,HttpMethod.POST);
+    public Result insertRole(@RequestBody SRole role, @RequestHeader("Authentication-Token") String token) {
+        return doPostObject(restTemplate, serverUrl + url + "/insertRole", role, token, HttpMethod.POST);
     }
 
     @DeleteMapping("/{id}")
@@ -73,8 +75,8 @@ public class RoleController extends BaseController {
     }
 
     @PostMapping("/setRoleMenu")
-    public Result setRoleMenu(HttpServletRequest request , @RequestHeader("Authentication-Token") String token) {
-        return doPostRestTemplate(restTemplate,serverUrl+url+"/setRoleMenu",request,token, HttpMethod.POST);
+    public Result setRoleMenu(@RequestBody Map<String,String> roleMenu, @RequestHeader("Authentication-Token") String token) {
+        return doPostObject(restTemplate,serverUrl+url+"/setRoleMenu",roleMenu,token, HttpMethod.POST);
     }
 
     @GetMapping("/getRoleMenuByRoleId/{roleId}")

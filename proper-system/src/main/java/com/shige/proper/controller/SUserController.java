@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 /**
  * <p>
@@ -86,6 +87,12 @@ public class SUserController extends BaseController{
     public Result checkUser(@PathVariable("userName") String userName){
 
         return  ResultUtil.success(userService.checkUser(userName));
+    }
+
+
+    @PostMapping("/addAdminUser")
+    public Result addAdminUser(@RequestBody Map map, @RequestHeader(ShigeConstant.TOKEN) String token){
+        return ResultUtil.success(userService.saveAdmin(map));
     }
 }
 

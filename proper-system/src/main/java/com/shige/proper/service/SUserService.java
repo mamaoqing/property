@@ -60,4 +60,6 @@ public interface SUserService extends IService<SUser> {
 
     boolean reSetPassword(String password,String token,Long id);
 
+    boolean saveAdmin(Map<String,String>map);
+
 }

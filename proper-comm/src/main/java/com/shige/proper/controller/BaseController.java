@@ -167,6 +167,7 @@ public class BaseController {
      * @param token 用户登录凭证
      */
     protected Result doPostRestTemplate(RestTemplate restTemplate, String url, HttpServletRequest request, String token, HttpMethod method){
+        Map<String, String> parameterMap = getParameterMap(request);
         HttpHeaders headers = new HttpHeaders();
         // 以表单的方式提交
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
@@ -177,14 +178,14 @@ public class BaseController {
     }
 
 
-    protected Result doPostRestTemplate(String url, HttpServletRequest request, String token, HttpMethod method){
+    protected Result doPostObject(RestTemplate restTemplate,String url, Object object, String token, HttpMethod method){
         HttpHeaders headers = new HttpHeaders();
         // 以表单的方式提交
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+//        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         headers.add(ShigeConstant.TOKEN,token);
         //将请求头部和参数合成一个请求
-        HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(this.getParams(request), headers);
-        return new RestTemplate().exchange(url,method,requestEntity,Result.class).getBody();
+        HttpEntity requestEntity = new HttpEntity<>(object, headers);
+        return restTemplate.exchange(url,method,requestEntity,Result.class).getBody();
     }
 
 

@@ -3,6 +3,7 @@ package com.shige.property.controller.system;
 import com.shige.proper.constant.ShigeConstant;
 import com.shige.proper.controller.BaseController;
 import com.shige.proper.entity.Result;
+import com.shige.proper.entity.system.SMenu;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
@@ -25,37 +26,38 @@ public class MenuController extends BaseController {
     protected String serverUrl;
     @Autowired
     private RestTemplate restTemplate;
-    
+
     private final String url = "/system/sMenu";
 
     @GetMapping("/get")
     public Result getMenuList(@RequestHeader(ShigeConstant.TOKEN) String token, HttpServletRequest request) {
-        return doGetRestTemplate(restTemplate,serverUrl+url+"/get",request,token);
+        return doGetRestTemplate(restTemplate, serverUrl + url + "/get", request, token);
     }
+
     @GetMapping("/getMenuListUser")
-    public  Result getMenuListUser(@RequestHeader(ShigeConstant.TOKEN) String token, HttpServletRequest request){
-        return doGetRestTemplate(restTemplate,serverUrl+url+"/getMenuListUser",request,token);
+    public Result getMenuListUser(@RequestHeader(ShigeConstant.TOKEN) String token, HttpServletRequest request) {
+        return doGetRestTemplate(restTemplate, serverUrl + url + "/getMenuListUser", request, token);
     }
 
     @PostMapping("/insertMenu")
-    public Result insertMenu(@RequestHeader(ShigeConstant.TOKEN) String token,HttpServletRequest request) {
-        return doPostRestTemplate(restTemplate,serverUrl+url+"/insertMenu",request,token, HttpMethod.POST);
+    public Result insertMenu(@RequestHeader(ShigeConstant.TOKEN) String token, @RequestBody SMenu sMenu) {
+        return doPostObject(restTemplate, serverUrl + url + "/insertMenu", sMenu, token, HttpMethod.POST);
     }
 
 
     @GetMapping("/{id}")
     public Result getMenu(@PathVariable("id") long id) {
-        return restTemplate.getForObject(serverUrl+url+"/"+id,Result.class);
+        return restTemplate.getForObject(serverUrl + url + "/" + id, Result.class);
     }
 
     @PutMapping("/updateMenu")
-    public Result updateMenu(@RequestHeader(ShigeConstant.TOKEN) String token,HttpServletRequest request) {
-        return doPostRestTemplate(restTemplate,serverUrl+url+"/updateMenu",request,token,HttpMethod.PUT);
+    public Result updateMenu(@RequestHeader(ShigeConstant.TOKEN) String token, @RequestBody SMenu sMenu) {
+        return doPostObject(restTemplate, serverUrl + url + "/updateMenu", sMenu, token, HttpMethod.PUT);
     }
 
     @DeleteMapping("/{id}")
-    public Result deleteMenu(@PathVariable("id") Long id,@RequestHeader(ShigeConstant.TOKEN) String token,HttpServletRequest request) {
-        return doPostRestTemplate(restTemplate,serverUrl+url+"/"+id,request,token,HttpMethod.DELETE);
+    public Result deleteMenu(@PathVariable("id") Long id, @RequestHeader(ShigeConstant.TOKEN) String token, HttpServletRequest request) {
+        return doPostRestTemplate(restTemplate, serverUrl + url + "/" + id, request, token, HttpMethod.DELETE);
     }
 
 }

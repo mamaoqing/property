@@ -37,7 +37,7 @@ public class SRoleController extends BaseController{
     }
 
     @PutMapping("/updateRole")
-    public Result updateRole(SRole role, @RequestHeader(ShigeConstant.TOKEN) String token) {
+    public Result updateRole(@RequestBody SRole role, @RequestHeader(ShigeConstant.TOKEN) String token) {
         return ResultUtil.success(roleService.saveOrUpdate(role, token));
 
     }
@@ -53,7 +53,7 @@ public class SRoleController extends BaseController{
     }
 
     @PostMapping("/insertRole")
-    public Result insertRole(SRole role, @RequestHeader(ShigeConstant.TOKEN) String token) {
+    public Result insertRole(@RequestBody SRole role, @RequestHeader(ShigeConstant.TOKEN) String token) {
         return ResultUtil.success(roleService.save(role,token));
     }
 
@@ -81,5 +81,24 @@ public class SRoleController extends BaseController{
     public Result getRoleMenuByRoleId(@PathVariable("roleId") String roleId){
         return ResultUtil.success(roleService.getRoleMenuByRoleId(roleId));
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
 

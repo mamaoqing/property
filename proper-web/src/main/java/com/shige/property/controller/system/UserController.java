@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 /**
  * @author mq
@@ -26,7 +27,7 @@ public class UserController extends BaseController {
     @Autowired
     private RestTemplate restTemplate;
 
-    private final String url = "";
+    private final String url = "/system/sUser";
 
 
 
@@ -37,27 +38,27 @@ public class UserController extends BaseController {
 
     @GetMapping("/listUser")
     public Result listUser(@RequestHeader("Authentication-Token") String token, HttpServletRequest request) {
-        return doGetRestTemplate(restTemplate,serverUrl+"/system/sUser/listUser",request,token);
+        return doGetRestTemplate(restTemplate,serverUrl+url+"/listUser",request,token);
     }
 
     @GetMapping("/listUserComm")
     public Result listUserComm(@RequestHeader("Authentication-Token") String token,HttpServletRequest request) {
-        return doGetRestTemplate(restTemplate,serverUrl+"/system/sUser/listUserComm",request,token);
+        return doGetRestTemplate(restTemplate,serverUrl+url+"/listUserComm",request,token);
     }
 
     @PostMapping("/insertUser")
-    public Result insertUser(SUser user, @RequestHeader("Authentication-Token") String token, HttpServletRequest request) {
-        return doPostRestTemplate(restTemplate,serverUrl+"/system/sUser/insertUser",request,token, HttpMethod.POST);
+    public Result insertUser(@RequestBody  SUser user, @RequestHeader("Authentication-Token") String token) {
+        return doPostObject(restTemplate, serverUrl + url + "/insertRole", user, token, HttpMethod.POST);
     }
 
     @DeleteMapping("/{id}")
     public Result deleteUser(@PathVariable("id") Long id,@RequestHeader("Authentication-Token") String token,HttpServletRequest request) {
-        return doPostRestTemplate(restTemplate,serverUrl+"/system/sUser/"+id,request,token,HttpMethod.DELETE);
+        return doPostRestTemplate(restTemplate,serverUrl+url+"/"+id,request,token,HttpMethod.DELETE);
     }
 
     @PutMapping("/updateUser")
-    public Result updateUser(SUser user, @RequestHeader("Authentication-Token") String token,HttpServletRequest request) {
-        return doPostRestTemplate(restTemplate,serverUrl+"/system/sUser/updateUser",request,token,HttpMethod.PUT);
+    public Result updateUser(@RequestBody  SUser user, @RequestHeader("Authentication-Token") String token) {
+        return doPostObject(restTemplate, serverUrl + url + "/updateUser", user, token, HttpMethod.POST);
     }
 
     /**
@@ -68,7 +69,7 @@ public class UserController extends BaseController {
      */
     @PutMapping("/reSetPassword")
     public Result reSetPassword(@RequestHeader("Authentication-Token") String token, HttpServletRequest request){
-        return doPostRestTemplate(restTemplate,serverUrl+"/system/sUser/reSetPassword",request,token, HttpMethod.PUT);
+        return doPostRestTemplate(restTemplate,serverUrl+url+"/reSetPassword",request,token, HttpMethod.PUT);
     }
 
     /**
@@ -79,7 +80,7 @@ public class UserController extends BaseController {
      */
     @PutMapping("/reSetPasswordAdmin")
     public Result reSetPasswordAdmin(@RequestHeader("Authentication-Token") String token,HttpServletRequest request){
-        return doPostRestTemplate(restTemplate,serverUrl+"/system/sUser/reSetPasswordAdmin",request,token,HttpMethod.PUT);
+        return doPostRestTemplate(restTemplate,serverUrl+url+"/reSetPasswordAdmin",request,token,HttpMethod.PUT);
     }
 
     /**
@@ -89,11 +90,16 @@ public class UserController extends BaseController {
      */
     @PostMapping("/setUserRole")
     public Result setUserRole(@RequestHeader("Authentication-Token") String token,HttpServletRequest request) {
-        return doPostRestTemplate(restTemplate,serverUrl+"/system/sUser/setUserRole",request,token,HttpMethod.POST);
+        return doPostRestTemplate(restTemplate,serverUrl+url+"/setUserRole",request,token,HttpMethod.POST);
     }
 
     @GetMapping("/checkUser/{userName}")
     public Result checkUser(@PathVariable("userName") String userName,HttpServletRequest request){
-        return  doGetRestTemplate(restTemplate,serverUrl+"/system/sUser/checkUser/"+userName,request,null);
+        return  doGetRestTemplate(restTemplate,serverUrl+url+"/checkUser/"+userName,request,null);
     }
+    @PostMapping("/addAdminUser")
+    public Result addAdminUser(@RequestHeader("Authentication-Token") String token, @RequestBody Map map) {
+        return doPostObject(restTemplate,serverUrl+url+"/addAdminUser",map,token,HttpMethod.POST);
+    }
+
 }

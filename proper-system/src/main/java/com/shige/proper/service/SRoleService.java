@@ -1,5 +1,6 @@
 package com.shige.proper.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.shige.proper.entity.system.SMenu;
 import com.shige.proper.entity.system.SRole;
@@ -22,7 +23,7 @@ public interface SRoleService extends IService<SRole> {
 
     boolean remove(Long id, String token);
 
-    List<SRole> listRole(Map<String, String> map, Integer pageNo, Integer size, String token);
+    Page<SRole> listRole(Map<String, String> map, Integer pageNo, Integer size, String token);
 
     Integer listRoleNum(Map<String, String> map, Integer pageNo, Integer size, String token);
 

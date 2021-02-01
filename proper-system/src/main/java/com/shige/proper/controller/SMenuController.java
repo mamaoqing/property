@@ -46,7 +46,7 @@ public class SMenuController extends BaseController{
 
     @PostMapping("/insertMenu")
     @ResponseBody
-    public Result insertMenu(SMenu menu, @RequestHeader(ShigeConstant.TOKEN) String token) {
+    public Result insertMenu(@RequestBody SMenu menu, @RequestHeader(ShigeConstant.TOKEN) String token) {
         return ResultUtil.success(sMenuService.insertMenu(menu, token));
     }
 
@@ -59,7 +59,7 @@ public class SMenuController extends BaseController{
 
     @PutMapping("/updateMenu")
     @ResponseBody
-    public Result updateMenu(SMenu menu, @RequestHeader(ShigeConstant.TOKEN) String token) {
+    public Result updateMenu(@RequestBody SMenu menu, @RequestHeader(ShigeConstant.TOKEN) String token) {
         return ResultUtil.success(sMenuService.updateMenu(menu, token));
     }
 

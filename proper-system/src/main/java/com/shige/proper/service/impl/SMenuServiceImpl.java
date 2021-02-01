@@ -24,7 +24,7 @@ import java.util.Map;
 
 /**
  * <p>
- *  服务实现类
+ * 服务实现类
  * </p>
  *
  * @author mq
@@ -90,11 +90,14 @@ public class SMenuServiceImpl extends ServiceImpl<SMenuMapper, SMenu> implements
         }
         SUser user = getUserByToken(token);
         SMenu menu = menuMapper.selectById(id);
-        String concat = menu.getParentIdList().concat(",").concat(id + "");
+        if (StringUtils.isEmpty(menu.getParentIdList())) {
+
+        }
+        String concat = StringUtils.isEmpty(menu.getParentIdList()) ? id + "," : menu.getParentIdList().concat(",").concat(id + "");
         // 删除菜单分为两部，1. 删除全部的子菜单如果子菜单存在子菜单继续删除。2.删除当前菜单。
         // 1.删除当前菜单的全部子菜单,父菜单列表之间用","隔开，需要在条件中添加','
         QueryWrapper<SMenu> sMenuQueryWrapper = new QueryWrapper<>();
-        sMenuQueryWrapper.and(queryWrapper -> queryWrapper.like("parent_id_list",concat.concat(",")).or().eq("parent_id_list",concat));
+        sMenuQueryWrapper.and(queryWrapper -> queryWrapper.like("parentIdList", concat.concat(",")).or().eq("parentIdList", concat));
         menuMapper.delete(sMenuQueryWrapper);
 
         // 2.删除当前菜单
@@ -121,7 +124,7 @@ public class SMenuServiceImpl extends ServiceImpl<SMenuMapper, SMenu> implements
         queryWrapper.like(!StringUtils.isEmpty(map.get("menuName")), "name", map.get("menuName"));
         Page<SMenu> page = new Page<>(pageNo, size);
 
-        return menuMapper.selectPage(page,queryWrapper);
+        return menuMapper.selectPage(page, queryWrapper);
     }
 
     private SUser getUserByToken(String token) {

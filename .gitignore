@@ -8,6 +8,7 @@ logs
 *.yml
 # Log file
 *.log
+*/src/main/resources/application.yml
 
 # BlueJ files
 *.ctxt

@@ -32,7 +32,7 @@ import static java.lang.Integer.parseInt;
 
 /**
  * <p>
- *  服务实现类
+ * 服务实现类
  * </p>
  *
  * @author mq
@@ -51,7 +51,7 @@ public class SUserServiceImpl extends ServiceImpl<SUserMapper, SUser> implements
 
     @Override
     public Page<SUser> listUser(String token, Map<String, String> map) {
-        if(map.isEmpty() || StringUtils.isEmpty(map.get("pageNo"))){
+        if (map.isEmpty() || StringUtils.isEmpty(map.get("pageNo"))) {
             throw new ShigeException(ShigeExceptionEnum.PAGE_NO_MISS_ERROR);
         }
         Integer pageNo = parseInt(map.get("pageNo"));
@@ -94,7 +94,7 @@ public class SUserServiceImpl extends ServiceImpl<SUserMapper, SUser> implements
         }
         SUser user = getUserByToken(token);
         Page<SUser> page = new Page<>(pageNo, size);
-        return userMapper.findUserCommList(page, map.get("compId"), map.get("userName"), map.get("name"), map.get("commId"),user.getId());
+        return userMapper.findUserCommList(page, map.get("compId"), map.get("userName"), map.get("name"), map.get("commId"), user.getId());
     }
 
     @Override
@@ -105,7 +105,7 @@ public class SUserServiceImpl extends ServiceImpl<SUserMapper, SUser> implements
     @Override
     public SUser findByUserName(String username) {
         QueryWrapper<SUser> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("userName",username);
+        queryWrapper.eq("userName", username);
 
         return userMapper.selectOne(queryWrapper);
     }
@@ -113,9 +113,9 @@ public class SUserServiceImpl extends ServiceImpl<SUserMapper, SUser> implements
     @Override
     public boolean checkUser(String userName) {
         QueryWrapper<SUser> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("userName",userName);
+        queryWrapper.eq("userName", userName);
         SUser user = userMapper.selectOne(queryWrapper);
-        if(null == user){
+        if (null == user) {
             return true;
         }
         return false;
@@ -186,13 +186,13 @@ public class SUserServiceImpl extends ServiceImpl<SUserMapper, SUser> implements
 
     @Override
     public boolean save(SUser user, String token) {
-        if(StringUtils.isEmpty(user.getPassword())||StringUtils.isEmpty(user.getUserName())){
+        if (StringUtils.isEmpty(user.getPassword()) || StringUtils.isEmpty(user.getUserName())) {
             throw new ShigeException(ShigeExceptionEnum.PARAMS_MISS_ERROR);
         }
         QueryWrapper<SUser> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("user_name",user.getUserName());
+        queryWrapper.eq("user_name", user.getUserName());
         SUser sUser = userMapper.selectOne(queryWrapper);
-        if(null != sUser){
+        if (null != sUser) {
             throw new ShigeException(ShigeExceptionEnum.USER_EXIST_ERROR);
         }
         SUser users = getUserByToken(token);
@@ -277,6 +277,31 @@ public class SUserServiceImpl extends ServiceImpl<SUserMapper, SUser> implements
             return true;
         }
         throw new ShigeException(ShigeExceptionEnum.RESET_PASSWORD_ERROR_SYSTEM);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean saveAdmin(Map<String, String> map) {
+        String userName = map.get("userName");
+        String password = map.get("password");
+        SUser user = new SUser();
+        user.setUserName(userName);
+        user.setPassword(PasswdEncryption.encptyPasswd(password));
+        Object compId = map.get("compId");
+        String s = compId.toString();
+        user.setCompId((Long.valueOf(s)));
+        int insert = userMapper.insert(user);
+        if (insert > 0) {
+            SRoleUser roleUser = new SRoleUser();
+            roleUser.setUserId(user.getId());
+            roleUser.setCompId(Long.valueOf(s));
+            roleUser.setRoleId(1L);
+            int insert1 = userRoleMapper.insert(roleUser);
+            if (insert1 > 0) {
+                return true;
+            }
+        }
+        throw new ShigeException(ShigeExceptionEnum.SYSTEM_INSERT_ERROR);
     }
 
     private SUser getUserByToken(String token) {
