@@ -48,7 +48,7 @@ public class UserController extends BaseController {
 
     @PostMapping("/insertUser")
     public Result insertUser(@RequestBody  SUser user, @RequestHeader("Authentication-Token") String token) {
-        return doPostObject(restTemplate, serverUrl + url + "/insertRole", user, token, HttpMethod.POST);
+        return doPostObject(restTemplate, serverUrl + url + "/insertUser", user, token, HttpMethod.POST);
     }
 
     @DeleteMapping("/{id}")
@@ -58,7 +58,7 @@ public class UserController extends BaseController {
 
     @PutMapping("/updateUser")
     public Result updateUser(@RequestBody  SUser user, @RequestHeader("Authentication-Token") String token) {
-        return doPostObject(restTemplate, serverUrl + url + "/updateUser", user, token, HttpMethod.POST);
+        return doPostObject(restTemplate, serverUrl + url + "/updateUser", user, token, HttpMethod.PUT);
     }
 
     /**
@@ -96,6 +96,10 @@ public class UserController extends BaseController {
     @GetMapping("/checkUser/{userName}")
     public Result checkUser(@PathVariable("userName") String userName,HttpServletRequest request){
         return  doGetRestTemplate(restTemplate,serverUrl+url+"/checkUser/"+userName,request,null);
+    }
+    @GetMapping("/listUserRole")
+    public Result listUserRole(HttpServletRequest request){
+        return  doGetRestTemplate(restTemplate,serverUrl+"/system/sRoleUser/listUserRole",request,null);
     }
     @PostMapping("/addAdminUser")
     public Result addAdminUser(@RequestHeader("Authentication-Token") String token, @RequestBody Map map) {

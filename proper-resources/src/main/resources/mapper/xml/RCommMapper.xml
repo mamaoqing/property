@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shige.proper.resource.mapper.RCommMapper">
+
+
+    <select id="listComm" resultMap="commMap">
+
+        select * from r_comm aa,r_area bb ${ew.customSqlSegment} and aa.id = bb.comm_id
+
+    </select>
+
+    <resultMap id="commMap" type="com.shige.proper.resource.entity.RComm">
+        <id column="id" property="id" />
+        <result column="comm_name" property="commName" />
+        <result column="comp_id" property="compId" />
+        <result column="comm_address" property="commAddress" />
+        <result column="province" property="province" />
+        <result column="city" property="city" />
+        <result column="district" property="district" />
+        <result column="province_id" property="provinceId" />
+        <result column="city_id" property="cityId" />
+        <result column="district_id" property="districtId" />
+        <result column="state" property="state" />
+        <result column="latitude" property="latitude" />
+        <result column="longitude" property="longitude" />
+        <result column="createTime" property="createTime" />
+        <result column="createUserId" property="createUserId" />
+        <result column="createUserName" property="createUserName" />
+        <collection property="childList" ofType="com.shige.proper.resource.entity.RArea">
+            <id column="a_id" property="id" />
+            <result column="comm_id" property="commId" />
+            <result column="comp_id" property="compId" />
+            <result column="area_name" property="areaName" />
+            <result column="state" property="state" />
+            <result column="latitude" property="latitude" />
+            <result column="longitude" property="longitude" />
+            <result column="createTime" property="createTime" />
+            <result column="createUserId" property="createUserId" />
+            <result column="createUserName" property="createUserName" />
+        </collection>
+    </resultMap>
+
+</mapper>

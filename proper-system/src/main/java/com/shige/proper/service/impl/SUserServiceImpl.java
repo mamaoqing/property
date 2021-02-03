@@ -25,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -54,32 +55,34 @@ public class SUserServiceImpl extends ServiceImpl<SUserMapper, SUser> implements
         if (map.isEmpty() || StringUtils.isEmpty(map.get("pageNo"))) {
             throw new ShigeException(ShigeExceptionEnum.PAGE_NO_MISS_ERROR);
         }
-        Integer pageNo = parseInt(map.get("pageNo"));
-        Integer size = 10;
+        int pageNo = parseInt(map.get("pageNo"));
+        int size = 10;
         if (StringUtils.isEmpty(pageNo)) {
             throw new ShigeException(ShigeExceptionEnum.PAGE_NO_MISS_ERROR);
         }
         if (!StringUtils.isEmpty(map.get("size"))) {
-            size = Integer.valueOf(map.get("size"));
+            size = Integer.parseInt(map.get("size"));
         }
+        Page<SUser> page = new Page<>(pageNo, size);
         SUser user = getUserByToken(token);
+        QueryWrapper<SUser> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq(!StringUtils.isEmpty(map.get("name")),"name",map.get("name"));
         String concat = null;
 
         if (!StringUtils.isEmpty(map.get("orgId"))) {
             String orgId = map.get("orgId");
             // 先查询当前组织的上级
-            QueryWrapper<SOrg> queryWrapper = new QueryWrapper<>();
-            queryWrapper.eq("id", orgId);
-            SOrg sOrg = orgMapper.selectOne(queryWrapper);
+            SOrg sOrg = orgMapper.selectById(orgId);
             concat = sOrg.getParentIdList().concat(",").concat(orgId);
+            List<String> strings = Arrays.asList(concat.split(","));
+            queryWrapper.in("orgId",strings);
         }
 
         // 区分超级管理员跟普通用户
-        Page<SUser> page = new Page<>(pageNo, size);
         if (!ShigeConstant.SUPER_ADMIN.equals(user.getType())) {
-            map.put("compId", user.getCompId() + "");
+            queryWrapper.eq("compId",user.getCompId());
         }
-        return userMapper.findUserList(page, map.get("compId"), map.get("userName"), map.get("name"), concat);
+        return userMapper.findUserList(page, queryWrapper);
     }
 
     @Override
@@ -190,7 +193,7 @@ public class SUserServiceImpl extends ServiceImpl<SUserMapper, SUser> implements
             throw new ShigeException(ShigeExceptionEnum.PARAMS_MISS_ERROR);
         }
         QueryWrapper<SUser> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("user_name", user.getUserName());
+        queryWrapper.eq("userName", user.getUserName());
         SUser sUser = userMapper.selectOne(queryWrapper);
         if (null != sUser) {
             throw new ShigeException(ShigeExceptionEnum.USER_EXIST_ERROR);
@@ -198,6 +201,7 @@ public class SUserServiceImpl extends ServiceImpl<SUserMapper, SUser> implements
         SUser users = getUserByToken(token);
         String psw = PasswdEncryption.encptyPasswd(user.getPassword());
         user.setPassword(psw);
+        user.setCompId(users.getCompId());
         user.setCreateUserId(users.getId());
         user.setCreateUserName(users.getUserName());
         int insert = userMapper.insert(user);

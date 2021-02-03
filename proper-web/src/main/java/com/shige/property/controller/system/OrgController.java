@@ -3,6 +3,7 @@ package com.shige.property.controller.system;
 import com.shige.proper.constant.ShigeConstant;
 import com.shige.proper.controller.BaseController;
 import com.shige.proper.entity.Result;
+import com.shige.proper.entity.system.SOrg;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
@@ -53,13 +54,13 @@ public class OrgController extends BaseController {
     }
 
     @PostMapping("/insertOrg")
-    public Result insertOrg(@RequestHeader(ShigeConstant.TOKEN) String token,HttpServletRequest request){
-        return doPostRestTemplate(restTemplate,serverUrl+url+"/insertOrg",request,token, HttpMethod.POST);
+    public Result insertOrg(@RequestHeader(ShigeConstant.TOKEN) String token,@RequestBody SOrg org){
+        return doPostObject(restTemplate,serverUrl+url+"/insertOrg",org,token, HttpMethod.POST);
     }
 
     @PutMapping("/updateOrg")
-    public Result updateOrg(@RequestHeader(ShigeConstant.TOKEN) String token, HttpServletRequest request){
-        return doPostRestTemplate(restTemplate,serverUrl+url+"/updateOrg",request,token, HttpMethod.PUT);
+    public Result updateOrg(@RequestHeader(ShigeConstant.TOKEN) String token,@RequestBody SOrg org){
+        return doPostObject(restTemplate,serverUrl+url+"/insertOrg",org,token, HttpMethod.POST);
     }
     @DeleteMapping("/{id}")
     public Result deleteOrg(@PathVariable("id") Long id,@RequestHeader(ShigeConstant.TOKEN) String token,HttpServletRequest request){

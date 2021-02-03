@@ -62,7 +62,17 @@ public class MenuUtil {
         }
         return childList;
     }
+    public static List<SOrg> orgList(List<SOrg> parentOrg,List<SOrg> allOrg) {
 
+        List<SOrg> result = new ArrayList<>();
+        for (SOrg list : parentOrg){
+            list.setChildList(getChildOrgList(list.getId(),allOrg));
+            result.add(list);
+        }
+
+
+        return result;
+    }
 
     /**
      * 封装机构信息。

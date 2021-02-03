@@ -15,7 +15,7 @@ import org.springframework.web.client.RestTemplate;
  * @projectName proper
  * @date 2021/1/2814:11
  */
-@SpringBootApplication(exclude = DataSourceAutoConfiguration.class)
+@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
 @EnableDiscoveryClient
 public class WebApplication {
     public static void main(String[] args) {

@@ -6,7 +6,7 @@ spring:
     driver-class-name: org.mariadb.jdbc.Driver
     username: root
     password: shige951021.
-    url: jdbc:mysql://146.56.246.141:3306/property?useUnicode=true&characterEncoding=utf8mb4&tinyInt1isBit=false&useSSL=false&serverTimezone=GMT
+    url: jdbc:mysql://146.56.246.141:33067/property?useUnicode=true&characterEncoding=utf8mb4&tinyInt1isBit=false&useSSL=false&serverTimezone=GMT
     hikari:
       minimum-idle: 3
       max-lifetime: 30000
@@ -17,7 +17,7 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: localhost:8848
+        server-addr: 172.16.0.42:8848
   redis:
     database: 0
     jedis:
@@ -26,9 +26,9 @@ spring:
         max-idle: 300
         max-wait: 5000
         min-idle: 5
-    host: 146.56.246.141
+    host: 132.232.89.144
     port: 6379
-    password:
+    password: sdzy@123
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

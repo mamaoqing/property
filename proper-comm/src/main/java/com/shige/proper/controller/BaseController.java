@@ -85,7 +85,6 @@ public class BaseController {
         } else {
             throw new RuntimeException("url请求:" + url + "请求参数有误不是map类型");
         }
-        log.info("url请求:" + url);
         return restTemplate.getForObject(url, Result.class);
     }
 
@@ -121,7 +120,6 @@ public class BaseController {
         } else {
             throw new RuntimeException("url请求:" + url + "请求参数有误不是map类型");
         }
-        log.info("url请求:" + url);
         if(map.isEmpty()){
             return restTemplate.exchange(url, HttpMethod.GET,requestEntity,Result.class).getBody();
         }
@@ -152,7 +150,6 @@ public class BaseController {
         } else {
             throw new RuntimeException("url请求:" + url + "请求参数有误不是map类型");
         }
-        log.info("url请求:" + url);
         if(map.isEmpty()){
             return new RestTemplate().exchange(url, HttpMethod.GET,requestEntity,Result.class).getBody();
         }
@@ -184,6 +181,7 @@ public class BaseController {
 //        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         headers.add(ShigeConstant.TOKEN,token);
         //将请求头部和参数合成一个请求
+        System.out.println(url);
         HttpEntity requestEntity = new HttpEntity<>(object, headers);
         return restTemplate.exchange(url,method,requestEntity,Result.class).getBody();
     }

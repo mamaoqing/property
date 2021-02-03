@@ -60,7 +60,7 @@ public class SRoleServiceImpl extends ServiceImpl<SRoleMapper, SRole> implements
         } else {
             throw new ShigeException(ShigeExceptionEnum.SYSTEM_UPDATE_ERROR);
         }
-        return update > 0;
+        return true;
     }
 
     @Override

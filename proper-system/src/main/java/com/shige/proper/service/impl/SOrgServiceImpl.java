@@ -1,6 +1,7 @@
 package com.shige.proper.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.shige.proper.entity.system.SComp;
 import com.shige.proper.entity.system.SOrg;
@@ -43,7 +44,8 @@ public class SOrgServiceImpl extends ServiceImpl<SOrgMapper, SOrg> implements SO
     public boolean autoSave(SComp company) {
         Long companyId = company.getId();
         String remark = "添加公司自动生成机构信息";
-        SOrg org = new SOrg(companyId,company.getCompName());
+        SOrg org = new SOrg();
+
         int insert = orgMapper.insert(org);
         if(insert > 0){
             log.info("自动生成公司机构信息成功。");
@@ -53,14 +55,25 @@ public class SOrgServiceImpl extends ServiceImpl<SOrgMapper, SOrg> implements SO
     }
 
     @Override
-    public List<SOrg> listOrg(String token) {
+    public Page<SOrg> listOrg(String token,Map<String,String> map) {
+        if(StringUtils.isEmpty(map.get("pageNo"))){
+            throw new ShigeException(ShigeExceptionEnum.PAGE_NO_MISS_ERROR);
+        }
+        int pageNo = Integer.parseInt(map.get("pageNo"));
+        int size = StringUtils.isEmpty(map.get("size")) ? 10: Integer.parseInt(map.get("size"));
+        Page<SOrg> page = new Page<>(pageNo,size);
+        QueryWrapper<SOrg> queryWrapper = new QueryWrapper<>();
         SUser user = getUserByToken(token);
         // 获取公司id，根据公司id查询公司下全部的机构信息
         Long compId = user.getCompId();
-        QueryWrapper<SOrg> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("comp_id",compId).select("id","name","parent_id","parent_id_list","state","remark");
-        List<SOrg> orgList = orgMapper.selectList(queryWrapper);
-        return MenuUtil.orgList(orgList);
+        queryWrapper.eq("comp_id",compId).select("id","name","parent_id","parent_id_list").isNull("parent_id");
+        Page<SOrg> sOrgPage = orgMapper.selectPage(page, queryWrapper);
+        List<SOrg> allOrg = orgMapper.selectList(null);
+        List<SOrg> orgList = sOrgPage.getRecords();
+
+        List<SOrg> sOrgs = MenuUtil.orgList(orgList,allOrg);
+        sOrgPage.setRecords(sOrgs);
+        return sOrgPage;
     }
 
     @Override

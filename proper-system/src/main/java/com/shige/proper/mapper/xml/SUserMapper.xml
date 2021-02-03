@@ -18,33 +18,7 @@
     </select>
     <!--compId = 1 and (parent_id_list like '0,3%' or (parent_id_list = '0,3')) and is_delete = 0 and userName='cfy' and name='cfy'-->
     <select id="findUserList" resultType="com.shige.proper.entity.system.SUser">
-        select * from
-        v_s_user_role where 1=1 and is_delete=0
-        <if test="compId != null and compId != ''">
-            and compId = #{compId}
-        </if>
-        <if test="userName != null and userName != ''">
-            and userName like CONCAT('%',#{userName},'%')
-        </if>
-        <if test="name != null and name != ''">
-            and name like CONCAT('%',#{name},'%')
-        </if>
-        <if test="parentIdList != null and parentIdList != ''">
-            and (parent_id_list = #{parentIdList} or parent_id_list like CONCAT(#{parentIdList},'%'))
-        </if>
-    </select>
-
-    <select id="findUserCommList" resultType="com.shige.proper.entity.system.SUser">
-        select u.*
-        from v_s_user_role u,s_user_comm comm
-        where u.id = comm.user_id and comm.comm_id= #{commId} and u.is_delete=0
-        and u.compId = #{compId}
-        <if test="userName != null and userName != ''">
-            and u.userName like CONCAT('%',#{userName},'%')
-        </if>
-        <if test="name != null and name != ''">
-            and u.name like CONCAT('%',#{name},'%')
-        </if>
+        select * from v_s_user_role ${ew.customSqlSegment}
     </select>
 
     <update id="updateUserOrg" parameterType="java.lang.Long">

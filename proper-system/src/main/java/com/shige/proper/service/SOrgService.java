@@ -1,5 +1,6 @@
 package com.shige.proper.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.shige.proper.entity.system.SComp;
 import com.shige.proper.entity.system.SOrg;
@@ -23,7 +24,7 @@ public interface SOrgService extends IService<SOrg> {
      */
     boolean autoSave(SComp company);
 
-    List<SOrg> listOrg(String token);
+    Page<SOrg> listOrg(String token, Map<String,String> map);
 
     boolean save(SOrg org,String token);
     boolean saveOrUpdate(SOrg org,String token);

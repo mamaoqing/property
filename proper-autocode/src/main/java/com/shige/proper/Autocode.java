@@ -46,7 +46,7 @@ public class Autocode {
         // 设置数据源
         DataSourceConfig dsc = new DataSourceConfig();
         dsc.setDriverName("org.mariadb.jdbc.Driver");
-        dsc.setUrl("jdbc:mysql://146.56.246.141:3306/property");
+        dsc.setUrl("jdbc:mysql://146.56.246.141:33067/property");
         dsc.setPassword("shige951021.");
         dsc.setUsername("root");
         dsc.setDbType(DbType.MARIADB);
@@ -55,7 +55,7 @@ public class Autocode {
 
         // 包配置
         PackageConfig pc = new PackageConfig();
-        pc.setModuleName("system");
+        pc.setModuleName("resource");
         pc.setParent("com.shige.proper");
         pc.setController("controller");
         pc.setService("service");
@@ -70,7 +70,7 @@ public class Autocode {
 //        strategy.setInclude("f_cost_item","f_cost_rule","f_cost_type","f_meter","f_meter_record");
 //        strategy.setInclude("f_bill_alter","f_bill_date");
 //        strategy.setInclude("r_unit","r_room","r_province","r_owner_property","r_owner_invoice_info","r_owner","r_district","r_community","r_comm_role_agreement","r_comm_area","r_city","r_building");
-        strategy.setInclude("s_user","s_role_menu","s_role","s_org","s_menu","s_dict","s_comp","s_role_user");
+        strategy.setInclude("r_city","r_district","r_province");
         strategy.setNaming(NamingStrategy.underline_to_camel);
         strategy.setColumnNaming(NamingStrategy.underline_to_camel);
         // 自动使用lombok

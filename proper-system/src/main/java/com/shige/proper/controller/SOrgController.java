@@ -9,6 +9,8 @@ import com.shige.proper.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * <p>
  *  前端控制器
@@ -24,8 +26,8 @@ public class SOrgController extends BaseController{
     private SOrgService orgService;
 
     @GetMapping("/listOrg")
-    public Result listOrg(@RequestHeader(ShigeConstant.TOKEN) String token){
-        return ResultUtil.success(orgService.listOrg(token));
+    public Result listOrg(@RequestHeader(ShigeConstant.TOKEN) String token, HttpServletRequest request){
+        return ResultUtil.success(orgService.listOrg(token,super.getParameterMap(request)));
     }
 
     @GetMapping("/{id}")
@@ -39,12 +41,12 @@ public class SOrgController extends BaseController{
     }
 
     @PostMapping("/insertOrg")
-    public Result insertOrg(@RequestHeader(ShigeConstant.TOKEN) String token, SOrg org){
+    public Result insertOrg(@RequestHeader(ShigeConstant.TOKEN) String token,@RequestBody SOrg org){
         return ResultUtil.success(orgService.save(org,token));
     }
 
     @PutMapping("/updateOrg")
-    public Result updateOrg(@RequestHeader(ShigeConstant.TOKEN) String token,SOrg org){
+    public Result updateOrg(@RequestHeader(ShigeConstant.TOKEN) String token,@RequestBody SOrg org){
         return ResultUtil.success(orgService.saveOrUpdate(org,token));
     }
     @DeleteMapping("/{id}")

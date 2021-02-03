@@ -1,6 +1,7 @@
 package com.shige.proper.entity.system;
 
 import com.baomidou.mybatisplus.annotation.*;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -57,6 +58,7 @@ public class SOrg implements Serializable {
      * 创建时间
      */
     @TableField(value = "createTime", fill = FieldFill.INSERT)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8",shape = JsonFormat.Shape.STRING)
     private Date createTime;
 
     /**
@@ -73,10 +75,5 @@ public class SOrg implements Serializable {
 
     @TableField(exist = false)
     private List<SOrg> childList;
-
-    public SOrg(Long companyId,String abbreviation){
-        this.compId = companyId;
-        this.name = abbreviation;
-    }
 
 }

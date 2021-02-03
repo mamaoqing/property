@@ -22,7 +22,7 @@ public interface SUserMapper extends BaseMapper<SUser> {
 
     Page<SUser> listUser(Page page, @Param("ew") QueryWrapper queryWrapper);
 
-    Page<SUser> findUserList(Page page,@Param("compId") String compId,@Param("userName")String userName,@Param("name")String name,@Param("parentIdList")String parentIdList);
+    Page<SUser> findUserList(Page page, @Param("ew") QueryWrapper queryWrapper);
 
     Page<SUser> findUserCommList(Page page,@Param("compId") String compId,@Param("userName")String userName,@Param("name")String name,
                                  @Param("commId")String commId,@Param("userId")Long userId);
